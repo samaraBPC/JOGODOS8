@@ -1,3 +1,4 @@
+#JOGO DOS 8
 import timeit #Biblioteca utilizada para calcular os tempos
 import copy #utilizada para fazer cópias das estruturas de dados do python
 import random #biblioteca utilizada para gerar números aleatórios
@@ -38,18 +39,7 @@ def geraInicial(st=META[:]): #gera um tabuleiro inicial
         st = [lista[:3]]+[lista[3:6]]+[lista[6:]]
         if solucionavel(lista) and st!= META: return st
     return 0
-#Faz a analise de acordo com uma matriz fornecidada pelo usuário, para utilizar esse modo comente a função gerarInicial acima
-#def geraInicial():
-#    st = []
-#    while True:
-#        print("Digite o estado inicial do jogo do 8:")
-#        for i in range(3):
-#            row = input().split()
-#            row = [int(num) for num in row]
-#            st.append(row)
-#        if solucionavel([j for i in st for j in i]) and st != META:
-#            return st
-#        print("O estado inicial fornecido não é solucionável. Por favor, tente novamente.")
+
 def localizar (estado,elemento=0): #localiza um elemento qualquer no tabuleiro, por padrão esse elemento é o 0
     for i in range(3):
         for j in range(3):
