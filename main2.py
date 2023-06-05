@@ -1,10 +1,11 @@
-#Dá os resultados de acordo com uma matriz (que representará o tabuleiro 9x9) fornecidada pelo usuário
-import timeit
-import copy
+# JOGO DOS 8 COM ESTADO INICIAL DEFINIDO PELO USUÁRIO
 
-META = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+import timeit #Biblioteca utilizada para calcular os tempos
+import copy #utilizada para fazer cópias das estruturas de dados do python
 
+META = [[1, 2, 3], [4, 5, 6], [7, 8, 0]] #posição final desejada
 
+#estrutura de dados necessária ao processamento
 class Noh:
     def __eq__(self, outro):
         return self.estado == outro.estado
@@ -21,7 +22,7 @@ class Noh:
     def getState(self):
         return self.estado
 
-
+#função que calcula as inversões
 def solucionavel(lista):
     inversoes = 0
     for i, e in enumerate(lista):
@@ -34,7 +35,7 @@ def solucionavel(lista):
                 inversoes += 1
     return inversoes % 2 == 0
 
-
+#gera um tabuleiro inicial
 def geraInicial(): #recebe a matriz de estado inicial do usuário
     st = []
     while True:
@@ -47,14 +48,14 @@ def geraInicial(): #recebe a matriz de estado inicial do usuário
             return st
         print("O estado inicial fornecido não é solucionável. Por favor, tente novamente.")
 
-
+#localiza um elemento qualquer no tabuleiro, por padrão esse elemento é o 0
 def localizar(estado, elemento=0):
     for i in range(3):
         for j in range(3):
             if estado[i][j] == elemento:
                 return i, j
 
-
+#Calcula a distancia quarteirão total do estado um para o dois
 def distanciaQuart(st1, st2):
     dist = 0
     fora = 0
@@ -68,12 +69,12 @@ def distanciaQuart(st1, st2):
             dist += abs(i2 - i) + abs(j2 - j)
     return dist + fora
 
-
+#Cria um nó
 def criarNo(estado, pai, g=0):
     h = g + distanciaQuart(estado, META)  # heuristica A*
     return Noh(estado, pai, g, h)
 
-
+#ordena a fronteira pela menor distancia total
 def inserirNoh(noh, fronteira):
     if noh in fronteira:
         return fronteira
@@ -86,7 +87,7 @@ def inserirNoh(noh, fronteira):
         j -= 1
     return fronteira
 
-
+#função dos movimentos do tabuleiro (movimento do espaço)
 def moverEsq(estado):
     linha, coluna = localizar(estado)
     if coluna > 0:
@@ -114,7 +115,7 @@ def moverAcima(estado):
         estado[linha - 1][coluna], estado[linha][coluna] = estado[linha][coluna], estado[linha - 1][coluna]
     return estado
 
-
+#retornar todos os sucessores de um nó
 def succ(noh):
     estado = noh.estado
     pai = noh.pai
@@ -137,7 +138,7 @@ def succ(noh):
         listaS.append(l4)
     return listaS
 
-
+#Busca A*
 def busca(max, nohInicio):
     print(nohInicio, ":")
     nmov = 0
@@ -164,7 +165,7 @@ def busca(max, nohInicio):
     return None, nmov
 
 
-def puzz8(maxD, nAmostras):
+def jogo8(maxD, nAmostras):
     tempos = []
     solucionados = []
     solucoes = []
@@ -195,4 +196,4 @@ def puzz8(maxD, nAmostras):
 # Executando o jogo do 8
 maxD = 15000
 nAmostras = 1
-tempos, solucionados, naoSolucionados, nS, nNs = puzz8(maxD, nAmostras)
+tempos, solucionados, naoSolucionados, nS, nNs = jogo8(maxD, nAmostras)

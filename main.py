@@ -1,10 +1,12 @@
-#JOGO DOS 8
+#JOGO DOS 8 COM ESTADOS INICIAIS ALEATÓRIOS
+
 import timeit #Biblioteca utilizada para calcular os tempos
 import copy #utilizada para fazer cópias das estruturas de dados do python
 import random #biblioteca utilizada para gerar números aleatórios
 import matplotlib as mpl #visualização de dados
 import matplotlib.pyplot as plt
 META = [[1,2,3],[4,5,6],[7,8,0]] #posição final desejada
+
 #estrutura de dados necessária ao processamento
 class Noh:
     def __eq__(self,outro):
@@ -18,7 +20,9 @@ class Noh:
         self.g = g
     def getState(self):
         return self.estado
-def solucionavel (lista): #função que calcula as inversões
+
+# função que calcula as inversões
+def solucionavel (lista):
     inversoes = 0
     for i, e in enumerate(lista):
         if e == 0:
@@ -32,7 +36,8 @@ def solucionavel (lista): #função que calcula as inversões
         return False
     else:
         return True
-def geraInicial(st=META[:]): #gera um tabuleiro inicial
+#gera um tabuleiro inicial
+def geraInicial(st=META[:]):
     lista = [j for i in st for j in i]
     while True:
         random.shuffle(lista)
@@ -40,14 +45,17 @@ def geraInicial(st=META[:]): #gera um tabuleiro inicial
         if solucionavel(lista) and st!= META: return st
     return 0
 
-def localizar (estado,elemento=0): #localiza um elemento qualquer no tabuleiro, por padrão esse elemento é o 0
+#localiza um elemento qualquer no tabuleiro, por padrão esse elemento é o 0
+def localizar (estado,elemento=0):
     for i in range(3):
         for j in range(3):
             if estado[i][j]==elemento:
                 linha = i
                 coluna = j
                 return linha,coluna
-def distanciaQuart(st1,st2):  #Calcula a distancia quarteirão total do estado um para o dois
+
+#Calcula a distancia quarteirão total do estado um para o dois
+def distanciaQuart(st1,st2):
     dist = 0
     fora = 0
     for i in range(3):
@@ -57,10 +65,14 @@ def distanciaQuart(st1,st2):  #Calcula a distancia quarteirão total do estado u
             if i2 != i or j2 != j: fora += 1
             dist += abs(i2-i)+abs(j2-j)
     return dist + fora
-def criarNo(estado,pai,g=0): #Cria um nó
+
+#Cria um nó
+def criarNo(estado,pai,g=0):
     h = g + distanciaQuart(estado,META) #heuristica A*
     return Noh(estado,pai,g,h)
-def inserirNoh(noh, fronteira): #ordena a fronteira pela menor distancia total
+
+#ordena a fronteira pela menor distancia total
+def inserirNoh(noh, fronteira):
     if noh in fronteira:
         return fronteira
     fronteira.append(noh)
@@ -71,7 +83,9 @@ def inserirNoh(noh, fronteira): #ordena a fronteira pela menor distancia total
         fronteira[j] = chave
         j-=1
     return fronteira
-def moverEsq(estado): #função dos movimentos do tabuleiro (movimento do espaço)
+
+#função dos movimentos do tabuleiro (movimento do espaço)
+def moverEsq(estado):
     linha,coluna = localizar(estado)
     if coluna > 0:
         estado[linha][coluna-1],estado[linha][coluna] = estado[linha][coluna],estado[linha][coluna-1]
@@ -91,7 +105,9 @@ def moverAcima(estado):
     if linha > 0:
         estado[linha-1][coluna],estado[linha][coluna] = estado[linha][coluna],estado[linha-1][coluna]
     return estado
+
 #retornar todos os sucessores de um nó
+
 def succ(noh):
     estado = noh.estado
     pai = noh.pai
@@ -113,6 +129,8 @@ def succ(noh):
     if l4 != estado:
             listaS.append(l4)
     return listaS
+
+#Busca A*
 def busca(max,nohInicio): #busca A*
     print(nohInicio,":")
     nmov = 0

@@ -1,4 +1,4 @@
-**_JOGO DOS 8**_
+# **_JOGO DOS 8**_
 
 Solucionar o problema do jogo dos 8 utilizando a busca por A* e heurística
 
